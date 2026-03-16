@@ -1,0 +1,2008 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: UAT Test Management Platform API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: users
+    description: User operations
+  - name: releases
+    description: Release operations
+  - name: testCycles
+    description: Test cycle operations
+  - name: testPlans
+    description: Test plan operations
+  - name: testCases
+    description: Test case operations
+  - name: testExecutions
+    description: Test execution operations
+  - name: defects
+    description: Defect operations
+  - name: approvals
+    description: Approval operations
+  - name: dashboard
+    description: Dashboard and reporting operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /users:
+    get:
+      operationId: listUsers
+      tags: [users]
+      summary: List all users
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      operationId: createUser
+      tags: [users]
+      summary: Create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserBody"
+      responses:
+        "201":
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      operationId: getUser
+      tags: [users]
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      operationId: updateUser
+      tags: [users]
+      summary: Update user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserBody"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /releases:
+    get:
+      operationId: listReleases
+      tags: [releases]
+      summary: List all releases
+      responses:
+        "200":
+          description: List of releases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Release"
+    post:
+      operationId: createRelease
+      tags: [releases]
+      summary: Create a release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateReleaseBody"
+      responses:
+        "201":
+          description: Created release
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Release"
+
+  /releases/{id}:
+    get:
+      operationId: getRelease
+      tags: [releases]
+      summary: Get release by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Release details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReleaseDetail"
+    patch:
+      operationId: updateRelease
+      tags: [releases]
+      summary: Update release
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateReleaseBody"
+      responses:
+        "200":
+          description: Updated release
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Release"
+
+  /test-cycles:
+    get:
+      operationId: listTestCycles
+      tags: [testCycles]
+      summary: List test cycles
+      parameters:
+        - name: releaseId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of test cycles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestCycle"
+    post:
+      operationId: createTestCycle
+      tags: [testCycles]
+      summary: Create a test cycle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestCycleBody"
+      responses:
+        "201":
+          description: Created test cycle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestCycle"
+
+  /test-cycles/{id}:
+    get:
+      operationId: getTestCycle
+      tags: [testCycles]
+      summary: Get test cycle by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Test cycle details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestCycleDetail"
+    patch:
+      operationId: updateTestCycle
+      tags: [testCycles]
+      summary: Update test cycle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestCycleBody"
+      responses:
+        "200":
+          description: Updated test cycle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestCycle"
+
+  /test-plans:
+    get:
+      operationId: listTestPlans
+      tags: [testPlans]
+      summary: List test plans
+      parameters:
+        - name: testCycleId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: releaseId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of test plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestPlan"
+    post:
+      operationId: createTestPlan
+      tags: [testPlans]
+      summary: Create a test plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestPlanBody"
+      responses:
+        "201":
+          description: Created test plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestPlan"
+
+  /test-plans/{id}:
+    get:
+      operationId: getTestPlan
+      tags: [testPlans]
+      summary: Get test plan by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Test plan details with scenarios
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestPlanDetail"
+    patch:
+      operationId: updateTestPlan
+      tags: [testPlans]
+      summary: Update test plan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestPlanBody"
+      responses:
+        "200":
+          description: Updated test plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestPlan"
+
+  /test-scenarios:
+    post:
+      operationId: createTestScenario
+      tags: [testCases]
+      summary: Create a test scenario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestScenarioBody"
+      responses:
+        "201":
+          description: Created test scenario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestScenario"
+
+  /test-scenarios/{id}:
+    get:
+      operationId: getTestScenario
+      tags: [testCases]
+      summary: Get test scenario by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Test scenario with cases
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestScenarioDetail"
+
+  /test-cases:
+    get:
+      operationId: listTestCases
+      tags: [testCases]
+      summary: List test cases
+      parameters:
+        - name: testPlanId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: scenarioId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: assigneeId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of test cases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestCase"
+    post:
+      operationId: createTestCase
+      tags: [testCases]
+      summary: Create a test case
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestCaseBody"
+      responses:
+        "201":
+          description: Created test case
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestCase"
+
+  /test-cases/{id}:
+    get:
+      operationId: getTestCase
+      tags: [testCases]
+      summary: Get test case by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Test case details with steps
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestCaseDetail"
+    patch:
+      operationId: updateTestCase
+      tags: [testCases]
+      summary: Update test case
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestCaseBody"
+      responses:
+        "200":
+          description: Updated test case
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestCase"
+
+  /test-executions:
+    get:
+      operationId: listTestExecutions
+      tags: [testExecutions]
+      summary: List test executions
+      parameters:
+        - name: testCaseId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: testCycleId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: executorId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of test executions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestExecution"
+    post:
+      operationId: createTestExecution
+      tags: [testExecutions]
+      summary: Create a test execution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestExecutionBody"
+      responses:
+        "201":
+          description: Created test execution
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestExecution"
+
+  /test-executions/{id}:
+    get:
+      operationId: getTestExecution
+      tags: [testExecutions]
+      summary: Get test execution by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Test execution details with steps
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestExecutionDetail"
+    patch:
+      operationId: updateTestExecution
+      tags: [testExecutions]
+      summary: Update test execution
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestExecutionBody"
+      responses:
+        "200":
+          description: Updated test execution
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestExecution"
+
+  /test-execution-steps/{id}:
+    patch:
+      operationId: updateTestExecutionStep
+      tags: [testExecutions]
+      summary: Update a test execution step result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestExecutionStepBody"
+      responses:
+        "200":
+          description: Updated step
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestExecutionStep"
+
+  /defects:
+    get:
+      operationId: listDefects
+      tags: [defects]
+      summary: List defects
+      parameters:
+        - name: testExecutionId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: severity
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: assigneeId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of defects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Defect"
+    post:
+      operationId: createDefect
+      tags: [defects]
+      summary: Create a defect
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDefectBody"
+      responses:
+        "201":
+          description: Created defect
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Defect"
+
+  /defects/{id}:
+    get:
+      operationId: getDefect
+      tags: [defects]
+      summary: Get defect by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Defect details with comments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefectDetail"
+    patch:
+      operationId: updateDefect
+      tags: [defects]
+      summary: Update defect
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDefectBody"
+      responses:
+        "200":
+          description: Updated defect
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Defect"
+
+  /defects/{id}/comments:
+    get:
+      operationId: listDefectComments
+      tags: [defects]
+      summary: List comments for a defect
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DefectComment"
+    post:
+      operationId: createDefectComment
+      tags: [defects]
+      summary: Add a comment to a defect
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDefectCommentBody"
+      responses:
+        "201":
+          description: Created comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefectComment"
+
+  /approvals:
+    get:
+      operationId: listApprovals
+      tags: [approvals]
+      summary: List approvals
+      parameters:
+        - name: releaseId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of approvals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Approval"
+    post:
+      operationId: createApproval
+      tags: [approvals]
+      summary: Create an approval request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateApprovalBody"
+      responses:
+        "201":
+          description: Created approval
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Approval"
+
+  /approvals/{id}:
+    get:
+      operationId: getApproval
+      tags: [approvals]
+      summary: Get approval by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Approval details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApprovalDetail"
+    patch:
+      operationId: updateApproval
+      tags: [approvals]
+      summary: Update approval (approve/reject)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateApprovalBody"
+      responses:
+        "200":
+          description: Updated approval
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Approval"
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get dashboard KPI stats
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /dashboard/defect-summary:
+    get:
+      operationId: getDefectSummary
+      tags: [dashboard]
+      summary: Get defect severity summary
+      responses:
+        "200":
+          description: Defect summary by severity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DefectSeverityCount"
+
+  /dashboard/execution-trend:
+    get:
+      operationId: getExecutionTrend
+      tags: [dashboard]
+      summary: Get test execution trend data
+      responses:
+        "200":
+          description: Trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecutionTrendPoint"
+
+  /reports/cycle-summary/{cycleId}:
+    get:
+      operationId: getCycleSummary
+      tags: [dashboard]
+      summary: Get summary report for a test cycle
+      parameters:
+        - name: cycleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cycle summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CycleSummary"
+
+  /seed:
+    post:
+      operationId: seedData
+      tags: [health]
+      summary: Seed the database with sample data
+      responses:
+        "200":
+          description: Seed complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeedResult"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        department:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, email, role, department, isActive, createdAt]
+
+    CreateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        department:
+          type: string
+      required: [name, email, role, department]
+
+    UpdateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        department:
+          type: string
+        isActive:
+          type: boolean
+
+    Release:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        freezeDate:
+          type: ["string", "null"]
+          format: date-time
+        goLiveDate:
+          type: ["string", "null"]
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+        ownerName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, description, status, startDate, endDate, createdAt]
+
+    ReleaseDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        freezeDate:
+          type: ["string", "null"]
+          format: date-time
+        goLiveDate:
+          type: ["string", "null"]
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+        ownerName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        testCycles:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestCycle"
+        stats:
+          $ref: "#/components/schemas/ReleaseStats"
+      required: [id, name, description, status, startDate, endDate, createdAt, testCycles, stats]
+
+    ReleaseStats:
+      type: object
+      properties:
+        totalCycles:
+          type: integer
+        totalTestCases:
+          type: integer
+        passed:
+          type: integer
+        failed:
+          type: integer
+        blocked:
+          type: integer
+        notStarted:
+          type: integer
+        passRate:
+          type: number
+        openDefects:
+          type: integer
+      required: [totalCycles, totalTestCases, passed, failed, blocked, notStarted, passRate, openDefects]
+
+    CreateReleaseBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        freezeDate:
+          type: ["string", "null"]
+          format: date-time
+        goLiveDate:
+          type: ["string", "null"]
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+      required: [name, description, startDate, endDate]
+
+    UpdateReleaseBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        freezeDate:
+          type: ["string", "null"]
+          format: date-time
+        goLiveDate:
+          type: ["string", "null"]
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+
+    TestCycle:
+      type: object
+      properties:
+        id:
+          type: integer
+        releaseId:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+        ownerName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, releaseId, name, type, status, startDate, endDate, createdAt]
+
+    TestCycleDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        releaseId:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+        ownerName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        testPlans:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestPlan"
+        stats:
+          $ref: "#/components/schemas/CycleStats"
+      required: [id, releaseId, name, type, status, startDate, endDate, createdAt, testPlans, stats]
+
+    CycleStats:
+      type: object
+      properties:
+        totalPlans:
+          type: integer
+        totalCases:
+          type: integer
+        passed:
+          type: integer
+        failed:
+          type: integer
+        blocked:
+          type: integer
+        inProgress:
+          type: integer
+        notStarted:
+          type: integer
+        passRate:
+          type: number
+      required: [totalPlans, totalCases, passed, failed, blocked, inProgress, notStarted, passRate]
+
+    CreateTestCycleBody:
+      type: object
+      properties:
+        releaseId:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+      required: [releaseId, name, type, startDate, endDate]
+
+    UpdateTestCycleBody:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        ownerId:
+          type: ["integer", "null"]
+
+    TestPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+        testCycleId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        module:
+          type: string
+        status:
+          type: string
+        entryCriteria:
+          type: string
+        exitCriteria:
+          type: string
+        ownerId:
+          type: ["integer", "null"]
+        ownerName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, testCycleId, name, description, module, status, createdAt]
+
+    TestPlanDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        testCycleId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        module:
+          type: string
+        status:
+          type: string
+        entryCriteria:
+          type: string
+        exitCriteria:
+          type: string
+        ownerId:
+          type: ["integer", "null"]
+        ownerName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        scenarios:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestScenario"
+        stats:
+          $ref: "#/components/schemas/PlanStats"
+      required: [id, testCycleId, name, description, module, status, createdAt, scenarios, stats]
+
+    PlanStats:
+      type: object
+      properties:
+        totalScenarios:
+          type: integer
+        totalCases:
+          type: integer
+        passed:
+          type: integer
+        failed:
+          type: integer
+        blocked:
+          type: integer
+        notStarted:
+          type: integer
+        passRate:
+          type: number
+      required: [totalScenarios, totalCases, passed, failed, blocked, notStarted, passRate]
+
+    CreateTestPlanBody:
+      type: object
+      properties:
+        testCycleId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        module:
+          type: string
+        status:
+          type: string
+        entryCriteria:
+          type: string
+        exitCriteria:
+          type: string
+        ownerId:
+          type: ["integer", "null"]
+      required: [testCycleId, name, description, module]
+
+    UpdateTestPlanBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        module:
+          type: string
+        status:
+          type: string
+        entryCriteria:
+          type: string
+        exitCriteria:
+          type: string
+        ownerId:
+          type: ["integer", "null"]
+
+    TestScenario:
+      type: object
+      properties:
+        id:
+          type: integer
+        testPlanId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        businessProcess:
+          type: string
+        priority:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, testPlanId, title, description, businessProcess, priority, createdAt]
+
+    TestScenarioDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        testPlanId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        businessProcess:
+          type: string
+        priority:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        testCases:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestCase"
+      required: [id, testPlanId, title, description, businessProcess, priority, createdAt, testCases]
+
+    CreateTestScenarioBody:
+      type: object
+      properties:
+        testPlanId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        businessProcess:
+          type: string
+        priority:
+          type: string
+      required: [testPlanId, title, description, businessProcess]
+
+    TestCase:
+      type: object
+      properties:
+        id:
+          type: integer
+        scenarioId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        preconditions:
+          type: string
+        priority:
+          type: string
+        complexity:
+          type: string
+        status:
+          type: string
+        assigneeId:
+          type: ["integer", "null"]
+        assigneeName:
+          type: ["string", "null"]
+        estimatedMinutes:
+          type: ["integer", "null"]
+        lastExecutionStatus:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, scenarioId, title, description, priority, complexity, status, createdAt]
+
+    TestCaseDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        scenarioId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        preconditions:
+          type: string
+        postconditions:
+          type: string
+        priority:
+          type: string
+        complexity:
+          type: string
+        status:
+          type: string
+        assigneeId:
+          type: ["integer", "null"]
+        assigneeName:
+          type: ["string", "null"]
+        estimatedMinutes:
+          type: ["integer", "null"]
+        lastExecutionStatus:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestStep"
+        executions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestExecution"
+      required: [id, scenarioId, title, description, priority, complexity, status, createdAt, steps, executions]
+
+    TestStep:
+      type: object
+      properties:
+        id:
+          type: integer
+        testCaseId:
+          type: integer
+        stepNumber:
+          type: integer
+        action:
+          type: string
+        expectedResult:
+          type: string
+        testData:
+          type: string
+      required: [id, testCaseId, stepNumber, action, expectedResult]
+
+    CreateTestCaseBody:
+      type: object
+      properties:
+        scenarioId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        preconditions:
+          type: string
+        postconditions:
+          type: string
+        priority:
+          type: string
+        complexity:
+          type: string
+        assigneeId:
+          type: ["integer", "null"]
+        estimatedMinutes:
+          type: ["integer", "null"]
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateTestStepBody"
+      required: [scenarioId, title, description, priority, complexity]
+
+    CreateTestStepBody:
+      type: object
+      properties:
+        stepNumber:
+          type: integer
+        action:
+          type: string
+        expectedResult:
+          type: string
+        testData:
+          type: string
+      required: [stepNumber, action, expectedResult]
+
+    UpdateTestCaseBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        preconditions:
+          type: string
+        postconditions:
+          type: string
+        priority:
+          type: string
+        complexity:
+          type: string
+        status:
+          type: string
+        assigneeId:
+          type: ["integer", "null"]
+        estimatedMinutes:
+          type: ["integer", "null"]
+
+    TestExecution:
+      type: object
+      properties:
+        id:
+          type: integer
+        testCaseId:
+          type: integer
+        testCycleId:
+          type: integer
+        executorId:
+          type: ["integer", "null"]
+        executorName:
+          type: ["string", "null"]
+        status:
+          type: string
+        result:
+          type: string
+        notes:
+          type: string
+        executedAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        testCaseTitle:
+          type: ["string", "null"]
+      required: [id, testCaseId, testCycleId, status, result, createdAt]
+
+    TestExecutionDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        testCaseId:
+          type: integer
+        testCycleId:
+          type: integer
+        executorId:
+          type: ["integer", "null"]
+        executorName:
+          type: ["string", "null"]
+        status:
+          type: string
+        result:
+          type: string
+        notes:
+          type: string
+        executedAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        testCaseTitle:
+          type: ["string", "null"]
+        testCase:
+          $ref: "#/components/schemas/TestCaseDetail"
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestExecutionStep"
+        defects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Defect"
+      required: [id, testCaseId, testCycleId, status, result, createdAt, testCase, steps, defects]
+
+    TestExecutionStep:
+      type: object
+      properties:
+        id:
+          type: integer
+        executionId:
+          type: integer
+        testStepId:
+          type: integer
+        stepNumber:
+          type: integer
+        action:
+          type: string
+        expectedResult:
+          type: string
+        actualResult:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+      required: [id, executionId, testStepId, stepNumber, action, expectedResult, status]
+
+    CreateTestExecutionBody:
+      type: object
+      properties:
+        testCaseId:
+          type: integer
+        testCycleId:
+          type: integer
+        executorId:
+          type: ["integer", "null"]
+      required: [testCaseId, testCycleId]
+
+    UpdateTestExecutionBody:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: string
+        notes:
+          type: string
+        executedAt:
+          type: ["string", "null"]
+          format: date-time
+
+    UpdateTestExecutionStepBody:
+      type: object
+      properties:
+        actualResult:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+
+    Defect:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+        priority:
+          type: string
+        status:
+          type: string
+        rootCause:
+          type: string
+        testExecutionId:
+          type: ["integer", "null"]
+        assigneeId:
+          type: ["integer", "null"]
+        assigneeName:
+          type: ["string", "null"]
+        reporterId:
+          type: ["integer", "null"]
+        reporterName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, title, description, severity, priority, status, createdAt, updatedAt]
+
+    DefectDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+        priority:
+          type: string
+        status:
+          type: string
+        rootCause:
+          type: string
+        testExecutionId:
+          type: ["integer", "null"]
+        assigneeId:
+          type: ["integer", "null"]
+        assigneeName:
+          type: ["string", "null"]
+        reporterId:
+          type: ["integer", "null"]
+        reporterName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/DefectComment"
+      required: [id, title, description, severity, priority, status, createdAt, updatedAt, comments]
+
+    CreateDefectBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+        priority:
+          type: string
+        rootCause:
+          type: string
+        testExecutionId:
+          type: ["integer", "null"]
+        assigneeId:
+          type: ["integer", "null"]
+        reporterId:
+          type: ["integer", "null"]
+      required: [title, description, severity, priority]
+
+    UpdateDefectBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+        priority:
+          type: string
+        status:
+          type: string
+        rootCause:
+          type: string
+        assigneeId:
+          type: ["integer", "null"]
+
+    DefectComment:
+      type: object
+      properties:
+        id:
+          type: integer
+        defectId:
+          type: integer
+        authorId:
+          type: ["integer", "null"]
+        authorName:
+          type: ["string", "null"]
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, defectId, content, createdAt]
+
+    CreateDefectCommentBody:
+      type: object
+      properties:
+        authorId:
+          type: ["integer", "null"]
+        content:
+          type: string
+      required: [content]
+
+    Approval:
+      type: object
+      properties:
+        id:
+          type: integer
+        releaseId:
+          type: integer
+        module:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        approverId:
+          type: ["integer", "null"]
+        approverName:
+          type: ["string", "null"]
+        comments:
+          type: string
+        conditions:
+          type: string
+        decidedAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, releaseId, module, type, status, createdAt]
+
+    ApprovalDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        releaseId:
+          type: integer
+        releaseName:
+          type: ["string", "null"]
+        module:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        approverId:
+          type: ["integer", "null"]
+        approverName:
+          type: ["string", "null"]
+        comments:
+          type: string
+        conditions:
+          type: string
+        decidedAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, releaseId, module, type, status, createdAt]
+
+    CreateApprovalBody:
+      type: object
+      properties:
+        releaseId:
+          type: integer
+        module:
+          type: string
+        type:
+          type: string
+        approverId:
+          type: ["integer", "null"]
+      required: [releaseId, module, type]
+
+    UpdateApprovalBody:
+      type: object
+      properties:
+        status:
+          type: string
+        comments:
+          type: string
+        conditions:
+          type: string
+
+    DashboardStats:
+      type: object
+      properties:
+        activeReleases:
+          type: integer
+        activeTestCycles:
+          type: integer
+        totalTestCases:
+          type: integer
+        passed:
+          type: integer
+        failed:
+          type: integer
+        blocked:
+          type: integer
+        notStarted:
+          type: integer
+        inProgress:
+          type: integer
+        passRate:
+          type: number
+        failRate:
+          type: number
+        blockedRate:
+          type: number
+        openDefects:
+          type: integer
+        criticalDefects:
+          type: integer
+        readinessScore:
+          type: number
+        signOffProgress:
+          type: number
+        overdueTestCases:
+          type: integer
+      required: [activeReleases, activeTestCycles, totalTestCases, passed, failed, blocked, notStarted, inProgress, passRate, failRate, blockedRate, openDefects, criticalDefects, readinessScore, signOffProgress, overdueTestCases]
+
+    DefectSeverityCount:
+      type: object
+      properties:
+        severity:
+          type: string
+        count:
+          type: integer
+      required: [severity, count]
+
+    ExecutionTrendPoint:
+      type: object
+      properties:
+        date:
+          type: string
+        passed:
+          type: integer
+        failed:
+          type: integer
+        blocked:
+          type: integer
+      required: [date, passed, failed, blocked]
+
+    CycleSummary:
+      type: object
+      properties:
+        cycleId:
+          type: integer
+        cycleName:
+          type: string
+        totalCases:
+          type: integer
+        passed:
+          type: integer
+        failed:
+          type: integer
+        blocked:
+          type: integer
+        notStarted:
+          type: integer
+        passRate:
+          type: number
+        defectsFound:
+          type: integer
+        criticalDefects:
+          type: integer
+        signOffStatus:
+          type: string
+      required: [cycleId, cycleName, totalCases, passed, failed, blocked, notStarted, passRate, defectsFound, criticalDefects, signOffStatus]
+
+    SeedResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required: [success, message]

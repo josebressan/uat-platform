@@ -1,0 +1,288 @@
+Build a modern enterprise web application for **Application Lifecycle Management focused on Test Management and User Acceptance Testing (UAT)**.
+
+The solution should feel like a real internal business application used by PMO, QA leads, business analysts, product owners, and business testers during SIT, UAT, and go-live readiness.
+
+## Product vision
+Create a centralized platform where teams can:
+- define test cycles
+- create and manage test plans
+- organize test scenarios and test cases
+- assign testers and owners
+- execute UAT and SIT testing
+- record pass/fail/block results
+- capture defects, evidence, comments, and retest history
+- monitor readiness dashboards and release quality status
+- manage sign-off workflows for business and IT stakeholders
+
+The application should support structured testing for ERP, business applications, workflows, integrations, reporting, and data validation.
+
+## Core modules
+Design the application with these modules:
+
+### 1. Dashboard
+Provide an executive and operational dashboard showing:
+- active releases
+- active test cycles
+- total test cases by status
+- pass rate
+- fail rate
+- blocked rate
+- defects by severity
+- overdue test cases
+- open critical issues
+- readiness score by workstream
+- sign-off progress
+- top risk areas
+
+### 2. Releases and Test Cycles
+Allow users to:
+- create releases
+- define SIT cycles and UAT cycles
+- configure start date, end date, freeze date, go-live date
+- assign owners
+- define scope by module, process, region, project, and business unit
+- track cycle health and status
+
+### 3. Test Plan Management
+Allow users to:
+- create test plans by release or cycle
+- organize plans by business process, module, workstream, or functional area
+- define entry criteria and exit criteria
+- associate plans to applications, integrations, reports, and data validation areas
+- clone previous test plans for reuse
+
+### 4. Test Scenario and Test Case Management
+Support:
+- hierarchical structure: test plan > scenario > test case
+- reusable test case library
+- versioning of test cases
+- preconditions, test steps, expected results, postconditions
+- priority, risk, complexity, business criticality
+- attachments and evidence templates
+- traceability to requirements, user stories, processes, and controls
+
+### 5. Test Execution
+Enable testers to:
+- open assigned test cases
+- execute step-by-step
+- mark each step if needed
+- record overall result: Not Started, In Progress, Passed, Failed, Blocked, Not Applicable
+- log execution date/time
+- capture notes, screenshots, files, and comments
+- create defects directly from failed executions
+- submit retest results
+- maintain full execution history
+
+### 6. Defect and Issue Tracking
+Allow users to:
+- create defects linked to failed test cases
+- assign severity and priority
+- define root cause category
+- assign defect owner
+- track lifecycle from Open to Closed
+- support statuses such as New, Assigned, In Progress, Ready for Retest, Retested, Closed, Deferred
+- link one defect to multiple test executions when appropriate
+- track SLA aging and resolution time
+
+### 7. UAT Sign-off and Approval
+Support:
+- business owner sign-off
+- module-level sign-off
+- release-level sign-off
+- conditional approvals
+- approvals with comments and exceptions
+- audit trail of approver, time, and rationale
+- readiness gates before production deployment
+
+### 8. Reporting and Analytics
+Provide:
+- cycle summary reports
+- defect leakage indicators
+- pass/fail trends
+- testing progress burndown
+- test coverage by requirement and business process
+- blocker aging
+- sign-off readiness
+- user productivity and execution throughput
+- export to PDF and Excel
+- filtered views for PMO, QA, business, and leadership
+
+## Key business entities
+Model the system around these entities:
+- Release
+- TestCycle
+- TestPlan
+- TestScenario
+- TestCase
+- TestCaseVersion
+- TestExecution
+- TestExecutionStep
+- Defect
+- DefectComment
+- EvidenceAttachment
+- Requirement
+- BusinessProcess
+- Workstream
+- Application
+- Environment
+- User
+- Role
+- Approval
+- ApprovalStep
+- Risk
+- Comment
+- AuditLog
+
+## Workflow expectations
+Support realistic enterprise workflows:
+- release created
+- test cycle created
+- test plan created
+- scenarios and cases loaded or cloned
+- cases assigned to testers
+- testers execute cases
+- failed cases generate defects
+- defects resolved and retested
+- dashboards update in near real time
+- business owners review overall readiness
+- sign-off captured with clear audit trail
+
+## Roles and permissions
+Include role-based access control for:
+- Admin
+- QA Manager
+- Test Lead
+- Business Analyst
+- Tester
+- Business Tester
+- Defect Owner
+- Product Owner
+- Executive Viewer
+- Approver
+
+Permissions should control who can:
+- create and edit releases
+- create and manage plans and cases
+- execute tests
+- create or close defects
+- approve sign-off
+- view sensitive dashboards or audit history
+
+## UX and UI expectations
+The UI must be modern, clean, and enterprise-grade.
+Design for heavy daily use.
+
+Include:
+- responsive layout
+- left navigation
+- dashboard landing page
+- filter panels
+- tabbed detail pages
+- status badges
+- progress bars
+- kanban or board views for defects
+- grid/table views for test cases
+- timeline or calendar views for cycles
+- detail drawers or side panels
+- strong search and advanced filters
+- bulk update actions
+- import/export actions
+- activity history sections
+
+Important UX principles:
+- optimize for speed of execution during testing
+- minimize clicks for testers
+- clearly highlight blocked and failed items
+- make status and ownership visible everywhere
+- support evidence upload naturally
+- provide excellent traceability between requirement, test case, execution, and defect
+
+## Functional requirements
+The application must support:
+- manual test management
+- reusable templates
+- test case cloning
+- assignment management
+- due dates and reminders
+- comments and collaboration
+- attachment uploads
+- audit logs
+- configurable statuses
+- configurable severity and priority values
+- rich filtering and search
+- saved views
+- notifications and alerts
+- CSV/Excel import for bulk test cases
+- exportable reporting
+
+## Non-functional requirements
+Design with enterprise concerns:
+- secure authentication
+- role-based authorization
+- auditability
+- scalability for large test volumes
+- maintainability
+- modular architecture
+- API-first backend
+- clear separation of frontend, backend, and data model
+- support for future integration with Azure DevOps, Jira, ServiceNow, SAP, Oracle Fusion, and Power BI
+
+## Suggested technical direction
+Use a clean architecture with:
+- React frontend
+- TypeScript
+- enterprise-grade component system
+- Node.js or .NET backend
+- REST APIs
+- relational database
+- background job support for notifications and imports
+- file storage for evidence
+- reporting-ready schema
+
+## Screens to design
+Create at minimum these screens:
+- Login / access page
+- Dashboard
+- Releases list
+- Release detail
+- Test cycles list
+- Test cycle detail
+- Test plans list
+- Test plan detail
+- Scenario detail
+- Test case library
+- Test case detail
+- My test executions
+- Execution workspace
+- Defects board
+- Defect detail
+- UAT sign-off page
+- Reports page
+- Admin configuration page
+
+## Data and analytics expectations
+The application should make it easy to answer:
+- Are we ready for go-live?
+- Which areas are high risk?
+- Which modules are blocked?
+- What is the critical defect count?
+- Which testers are behind schedule?
+- What failed most often?
+- Which requirements do not yet have passing test coverage?
+- Which business owners have not signed off?
+
+## Output expectations
+Generate:
+1. application architecture
+2. data model
+3. key APIs
+4. navigation structure
+5. recommended pages and components
+6. role matrix
+7. core workflows
+8. dashboard KPI design
+9. phased implementation plan
+10. future enhancement ideas
+
+Prioritize practical enterprise usability over flashy design.
+The result should feel like a serious internal platform for structured SIT and UAT management in a large organization.

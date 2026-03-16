@@ -1,0 +1,17 @@
+packages:
+  "recharts": "For rendering dashboard KPI charts, execution trends, and defect severity summaries."
+  "framer-motion": "For page transitions, subtle entry animations, and interactive hover states."
+  "date-fns": "For formatting complex dates and timestamps throughout the application."
+  "lucide-react": "For crisp, professional iconography across the enterprise UI."
+  "clsx": "For composing tailwind classes dynamically."
+  "tailwind-merge": "For safely merging tailwind classes without conflicts."
+
+images:
+  - path: "artifacts/uat-platform/public/images/logo.png"
+    description: "Minimalist, sharp geometric logo mark in vibrant blue and white, suitable for an enterprise tech platform, transparent background"
+    aspect_ratio: "1:1"
+
+notes:
+  - "Assuming dark mode professional enterprise design."
+  - "Importing API hooks directly from @workspace/api-client-react as specified in the workspace monorepo architecture."
+  - "All forms use controlled state for robustness and fast rendering."
